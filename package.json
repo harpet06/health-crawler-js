@@ -1,0 +1,35 @@
+{
+  "name": "js-crawler",
+  "version": "1.0.0",
+  "description": "crawler for JS framework pages",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "test",
+    "crawler",
+    "lambda"
+  ],
+  "author": "T Harper",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "chrome-aws-lambda": "^2.0.2",
+    "middy": "^0.33.2",
+    "puppeteer-core": "^2.1.0",
+    "serverless": "^1.62.0",
+    "serverless-domain-manager": "^3.3.1",
+    "serverless-offline": "^5.12.1",
+    "serverless-plugin-typescript": "^1.1.9",
+    "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/puppeteer-core": "^1.9.0",
+    "babel-loader": "^8.0.6",
+    "puppeteer": "1.19.0"
+  }
+}
