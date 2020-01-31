@@ -7,6 +7,8 @@ import {
   httpHeaderNormalizer,
   httpErrorHandler
 } from "middy/middlewares";
+import { crawl } from "./functions/crawl";
+import { getLinks } from "./functions/links";
 
 const handler = async (event: any) => {
   const executablePath = event.isOffline
@@ -18,21 +20,20 @@ const handler = async (event: any) => {
     executablePath
   });
 
+  let urls = [];
+
   const page = await browser.newPage();
+  await page.goto("https://www.bbc.co.uk/sport");
 
-  await page.goto("https://www.google.com", {
-    waitUntil: ["networkidle0", "load", "domcontentloaded"]
-  });
+  await getLinks(page, urls);
 
-  const pdfStream = await page.pdf();
+  //await crawl(links, page, urls);
+  await browser.close();
 
   return {
     statusCode: 200,
-    isBase64Encoded: true,
-    headers: {
-      "Content-type": "application/pdf"
-    },
-    body: pdfStream.toString("base64")
+    headers: { "content-type": "text/html" },
+    body: `<html><body>${JSON.stringify(urls)}</body></html>`
   };
 };
 
