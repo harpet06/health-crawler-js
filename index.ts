@@ -9,6 +9,7 @@ import {
 } from "middy/middlewares";
 import { crawl } from "./functions/crawl";
 import { getLinks } from "./functions/links";
+import { ResponseGen } from "./wrappers/response";
 
 const handler = async (event: any) => {
   const executablePath = event.isOffline
@@ -20,21 +21,51 @@ const handler = async (event: any) => {
     executablePath
   });
 
-  let urls = [];
+  let baseUrl: string = "https://www.bbc.co.uk/sport";
+  let urls: Array<string> = [];
+  let crawled: Array<string> = [];
 
   const page = await browser.newPage();
-  await page.goto("https://www.bbc.co.uk/sport");
+  await page.goto(baseUrl);
 
-  await getLinks(page, urls);
-
-  //await crawl(links, page, urls);
+  await getLinks(page, urls, baseUrl);
+  await crawl(urls, page, crawled);
+  
+  const sendMessageToClient = (url, connectionId, payload) =>
+  new Promise((resolve, reject) => {
+    const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
+      apiVersion: '2018-11-29',
+      endpoint: url,
+    });
+    apigatewaymanagementapi.postToConnection(
+      {
+        ConnectionId: connectionId, // connectionId of the receiving ws-client
+        Data: JSON.stringify(payload),
+      },
+      (err, data) => {
+        if (err) {
+          console.log('err is', err);
+          reject(err);
+        }
+        resolve(data);
+      }
+    );
+  });
+  
+  
+  
+  
+  
+  
+  
+  
   await browser.close();
 
-  return {
-    statusCode: 200,
-    headers: { "content-type": "text/html" },
-    body: `<html><body>${JSON.stringify(urls)}</body></html>`
-  };
+
+
+
+
+  return new ResponseGen(200, crawled).generateResponse();
 };
 
 export const generate = middy(handler)

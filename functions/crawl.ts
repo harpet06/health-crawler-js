@@ -1,10 +1,16 @@
+let numberOfPagesVisited: number = 0
+let maximumPagesToVisit: number = 3
+
 export const crawl = async (
-  links: Array<string>,
+  urls: Array<string>,
   page: any,
   crawled: Array<string>
 ) => {
-  for (let link of links) {
-    await page.goto(link);
-    crawled.push(page.url());
+  for (let url of urls) {
+    if (numberOfPagesVisited < maximumPagesToVisit) {
+    await page.goto(url);
+    crawled.push(url);
+    numberOfPagesVisited++;
+    } else return 
   }
 };

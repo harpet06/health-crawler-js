@@ -11,7 +11,11 @@ provider:
 functions:
   handler:
     handler: index.generate
-    events: 
+    events:
+      - websocket: 
+          route: $connect
+      - websocket: 
+          route: $disconnect 
       - http: 
           path: /
           method: ANY
