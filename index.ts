@@ -7,6 +7,9 @@ import {
   httpHeaderNormalizer,
   httpErrorHandler
 } from "middy/middlewares";
+import { crawl } from "./functions/crawl";
+import { getLinks } from "./functions/links";
+import { ResponseGen } from "./wrappers/response";
 
 const handler = async (event: any) => {
   const executablePath = event.isOffline
@@ -18,22 +21,18 @@ const handler = async (event: any) => {
     executablePath
   });
 
+  let baseUrl: string = "https://www.bbc.co.uk/sport";
+  let urls: Array<string> = [];
+  let crawled: Array<object> = [];
+
   const page = await browser.newPage();
+  await page.goto(baseUrl);
 
-  await page.goto("https://www.google.com", {
-    waitUntil: ["networkidle0", "load", "domcontentloaded"]
-  });
-
-  const pdfStream = await page.pdf();
-
-  return {
-    statusCode: 200,
-    isBase64Encoded: true,
-    headers: {
-      "Content-type": "application/pdf"
-    },
-    body: pdfStream.toString("base64")
-  };
+  await getLinks(page, urls, baseUrl);
+  await crawl(urls, page, crawled);
+  
+  await browser.close();
+  return new ResponseGen(200, crawled).generateResponse();
 };
 
 export const generate = middy(handler)
@@ -41,3 +40,4 @@ export const generate = middy(handler)
   .use(cors())
   .use(doNotWaitForEmptyEventLoop())
   .use(httpErrorHandler());
+ 
