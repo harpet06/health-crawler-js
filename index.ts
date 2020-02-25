@@ -31,40 +31,7 @@ const handler = async (event: any) => {
   await getLinks(page, urls, baseUrl);
   await crawl(urls, page, crawled);
   
-  const sendMessageToClient = (url, connectionId, payload) =>
-  new Promise((resolve, reject) => {
-    const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
-      apiVersion: '2018-11-29',
-      endpoint: url,
-    });
-    apigatewaymanagementapi.postToConnection(
-      {
-        ConnectionId: connectionId, // connectionId of the receiving ws-client
-        Data: JSON.stringify(payload),
-      },
-      (err, data) => {
-        if (err) {
-          console.log('err is', err);
-          reject(err);
-        }
-        resolve(data);
-      }
-    );
-  });
-  
-  
-  
-  
-  
-  
-  
-  
   await browser.close();
-
-
-
-
-
   return new ResponseGen(200, crawled).generateResponse();
 };
 
@@ -73,3 +40,4 @@ export const generate = middy(handler)
   .use(cors())
   .use(doNotWaitForEmptyEventLoop())
   .use(httpErrorHandler());
+ 

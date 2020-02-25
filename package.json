@@ -23,7 +23,8 @@
     "serverless-domain-manager": "^3.3.1",
     "serverless-offline": "^5.12.1",
     "serverless-plugin-typescript": "^1.1.9",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "url-parse": "^1.4.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -31,6 +32,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
     "@types/puppeteer-core": "^1.9.0",
+    "aws-sdk": "^2.624.0",
     "babel-loader": "^8.0.6",
     "puppeteer": "1.19.0"
   }
