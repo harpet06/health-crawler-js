@@ -17,6 +17,7 @@ functions:
       - websocket: 
           route: $disconnect 
       - http: 
-          path: /
-          method: ANY
+          path: /crawl
+          method: POST
           cors: true
+          

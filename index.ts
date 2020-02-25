@@ -23,7 +23,7 @@ const handler = async (event: any) => {
 
   let baseUrl: string = "https://www.bbc.co.uk/sport";
   let urls: Array<string> = [];
-  let crawled: Array<string> = [];
+  let crawled: Array<object> = [];
 
   const page = await browser.newPage();
   await page.goto(baseUrl);

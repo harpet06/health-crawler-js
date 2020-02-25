@@ -1,7 +1,7 @@
 export class ResponseGen {
   code: number;
-  result: Array<string>;
-  constructor(responseCode: number, results: Array<string>) {
+  result: Array<object>;
+  constructor(responseCode: number, results: Array<object>) {
     this.code = responseCode;
     this.result = results;
   }
