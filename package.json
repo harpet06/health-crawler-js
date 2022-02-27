@@ -24,7 +24,7 @@
     "serverless-offline": "^5.12.1",
     "serverless-plugin-typescript": "^1.1.9",
     "typescript": "^3.7.5",
-    "url-parse": "^1.4.7"
+    "url-parse": "^1.5.8"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
